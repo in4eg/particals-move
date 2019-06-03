@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="format-detection" content="telephone=no">
+
+	<title>Timer :: Canvas</title>
+
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="css/bundle.min.css">
+</head>
+<body class="main-body">
+	<div class="page-cover">
+		<!-- main -->
+		<main class="page-main verticaly-middle">
+			<div class="inner">
+				<div class="time-counters">
+					<div class="counters-group">
+						<!-- day -->
+						<div class="counter-part">
+							<div class="count-to">
+							<canvas class="timer-canvas" data-width="5" data-timer="%d" data-bgcolor="#bbf" data-drawcolor="#f0d" data-from="31/05/2019" data-to="31/05/2020"></canvas>
+							<div class="counter-caption">
+								<div class="digit">0</div>
+								<div class="title">Day</div>
+								</div>
+							</div>
+						</div>
+						<!-- hours -->
+						<div class="counter-part">
+							<div class="count-to">
+							<canvas class="timer-canvas" data-width="5" data-timer="%h" data-bgcolor="#bbf" data-drawcolor="#f0d" data-to="31/05/2020"></canvas>
+							<div class="counter-caption">
+								<div class="digit">0</div>
+								<div class="title">Hr</div>
+								</div>
+							</div>
+						</div>
+						<!-- min -->
+						<div class="counter-part">
+							<div class="count-to">
+							<canvas class="timer-canvas" data-width="5" data-timer="%m" data-bgcolor="#bbf" data-drawcolor="#f0d" data-to="31/05/2020"></canvas>
+							<div class="counter-caption">
+								<div class="digit">0</div>
+								<div class="title">Min</div>
+								</div>
+							</div>
+						</div>
+						<!-- sec -->
+						<div class="counter-part">
+							<div class="count-to">
+							<canvas class="timer-canvas" data-width="5" data-timer="%s" data-bgcolor="#bbf" data-drawcolor="#f0d" data-to="31/05/2020"></canvas>
+							<div class="counter-caption">
+								<div class="digit">0</div>
+								<div class="title">Sec</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<!-- / main -->
+</div>
+
+<!-- font -->
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+
+<!-- script -->
+<script src="js/lib/jquery.min.js"></script>
+<script src="js/main.js"></script>
+
+<!-- timer -->
+<script src="js/init/timer.js"></script>
+</body>
+</html>
