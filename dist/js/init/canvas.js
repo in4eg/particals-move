@@ -5,9 +5,9 @@
 
 
 var config = {
-	pointsMax: 5,
+	pointsMax: 1,
 	maxParticleSize: 20,
-	maxSpeed: 40,
+	speed: 1,
 	colorVariation: 50
 };
 
@@ -26,7 +26,6 @@ var width = 0, height = 0;
 
 window.addEventListener('resize', function() {
 	setCanvasSize();
-	drawCircle();
 });
 
 
@@ -39,11 +38,13 @@ function getRandomColor() {
 	return color;
 }
 
-Circle = function(x, y, radius){
+Circle = function(x, y, radius, color){
 	this.x = x || Math.round(Math.random() * canvas.width);
 	this.y = y || Math.round(Math.random() * canvas.height);
 	this.radius = radius || Math.round(Math.random() * config.maxParticleSize);
-	this.color = getRandomColor();
+	this.vx = -5 + Math.random()*10;
+	this.vy = .2* this.radius;
+	this.color = color;
 
 	this.draw = function(){
 		ctx.beginPath();
@@ -53,37 +54,37 @@ Circle = function(x, y, radius){
 		ctx.closePath();
 	}
 	this.update = function(){
-		if (this.x < canvas.width - radius*2) {
-			this.x += 1
+		if (this.x < canvas.width - radius*2 && this.x > radius*2) {
+			this.x = (this.x + this.vx/config.speed);
 		} else {
-			this.x = 0
+			this.changeDirection()
 		}
-		if (this.y < canvas.height - radius*2) {
-			this.y += 1
+		if (this.y < canvas.height - radius*2 && this.y > radius*2) {
+			this.y = (this.y + this.vy/config.speed);
 		} else {
-			this.y = 0
+			this.changeDirection()
 		}
-		this.draw(this.x, this.y);
+		this.draw(this.x, this.y, this.radius, this.color);
 	}
-
+	this.updatePosition = function(x, y){
+		this.x = x; this.y = y;
+	}
+	this.changeDirection = function(){
+		// console.log(this.x, this.y)
+		// this.x = (this.x - parseInt(this.vx/config.speed));
+		// this.y = (this.y - parseInt(this.vx/config.speed));
+	}
 	// this.draw();
 };
 
 var pointsArray = [];
 
-function drawCircle() {
-	
-	for ( var i = 0; i < config.pointsMax; i++ ){
-		// Возвращает случайное число между min (включительно) и max (не включая max)
-		// Math.random() * (max - min) + min;
-		var radius = Math.ceil(Math.random() * config.maxParticleSize);
-		// учитывая ширину частицы и отступы по краям
-		var x = Math.random() * (width - radius*2) + radius;
-		var y = Math.random() * (height - radius*2) + radius;
-		
-		pointsArray.push(new Circle(x, y, radius));
-	};
-};
+function getCursorPosition(canvas, event) {
+	var rect = canvas.getBoundingClientRect();
+	var x = event.clientX - rect.left;
+	var y = event.clientY - rect.top;
+	return {x: x, y: y};
+}
 
 function animateCircle() {
 	ctx.clearRect(0, 0, width, height);
@@ -92,7 +93,28 @@ function animateCircle() {
 		pointsArray[i].update();
 	}
 	requestAnimationFrame(animateCircle);
-}
+};
+
+function drawCircle() {
+	for ( var i = 0; i < config.pointsMax; i++ ){
+		// Возвращает случайное число между min (включительно) и max (не включая max)
+		// Math.random() * (max - min) + min;
+		var radius = Math.ceil(Math.random() * config.maxParticleSize);
+		// учитывая ширину частицы и отступы по краям
+		var x = Math.random() * (width - radius*2) + radius;
+		var y = Math.random() * (height - radius*2) + radius;
+		
+		pointsArray.push(new Circle(x, y, radius, getRandomColor()));
+	};
+	animateCircle()
+};
 
 drawCircle()
-animateCircle()
+
+//report the mouse position on click
+canvas.addEventListener("click", function (event) {
+	var coords = getCursorPosition(canvas, event);
+	for (var i = 0; i < pointsArray.length; i++ ){ 
+		pointsArray[i].updatePosition(coords.x, coords.y);
+	}
+});
